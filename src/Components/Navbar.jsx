@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
   Button,
   Flex,
@@ -15,7 +15,8 @@ import {
   Input,
 } from "@chakra-ui/react";
 import AuthContext from "../context/AuthContext";
-
+import TokenContext from "../context/TokenContext";
+import LoadingContext from "../context/LoadingContext";
 
 const initState = { email: "", password: "" };
 
@@ -30,8 +31,10 @@ function Navbar() {
     setState({ ...state, [name]: value });
   };
 
-const [authToken, setAuthToken] = useState({})
+  const [token, setToken] = useContext(TokenContext);
+  const [loading, toggleLoading] = useContext(LoadingContext);
   function doLogin() {
+    toggleLoading(true);
     fetch("https://reqres.in/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -40,9 +43,10 @@ const [authToken, setAuthToken] = useState({})
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        setAuthToken(data);
         if (data.token === "QpwL5tke4Pnpja7X4") {
+          toggleLoading(false);
           toggleAuth(!isAuth);
+          setToken(data);
         }
       });
     onClose();
@@ -63,6 +67,7 @@ const [authToken, setAuthToken] = useState({})
             isAuth
               ? () => {
                   toggleAuth(!isAuth);
+                  setToken({});
                 }
               : onOpen
           }
