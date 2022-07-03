@@ -48,6 +48,10 @@ function Navbar() {
           toggleAuth(!isAuth);
           setToken(data);
         }
+        else{
+          toggleLoading(false)
+          setToken(data);
+        }
       });
     onClose();
   }
@@ -67,7 +71,7 @@ function Navbar() {
             isAuth
               ? () => {
                   toggleAuth(!isAuth);
-                  setToken({});
+                  // setToken({});
                 }
               : onOpen
           }

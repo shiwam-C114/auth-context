@@ -32,7 +32,19 @@ function Status() {
               id: "out",
             })
           : ""
-        : ""}
+        : token.error?
+        !toast.isActive("ot")
+          ?
+        toast({
+          title: `${token.error}`,
+          description: "Use eve.holt@reqres.in as email and any password",
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+          id: "ot",
+        })
+        :""
+      : ""}
     </>
   );
 }
